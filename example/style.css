@@ -23,7 +23,7 @@
     background-color: blueviolet;
     border-color: black;
     border: 1px;
- }
+}
 
 .partialbottomdiv {
     position:relative;
@@ -34,7 +34,14 @@
     background-color: blueviolet;
     border-color: black;
     border: 1px;
- }
+}
+
+.divwithimg {
+    height: 1in;
+    width: 1in;
+    background-image: url("img_main/14.jpg");
+    background-size: 100%;
+}
 
 .secondscreen {
     margin-top: 0.5in;
