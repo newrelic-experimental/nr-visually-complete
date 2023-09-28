@@ -13,6 +13,8 @@ export class Observer {
     pageLoadHandler = () => { this.pageLoaded() };
 
     constructor () {
+        Logger.DEBUG("Construct Observer")
+
         this.watchdog = new Watchdog(15000, () => { this.whatchdogHandler() });
         this.observer = new MutationObserver((ml, obs) => { this.mutationObservedHandler(ml, obs) });
     }
@@ -94,6 +96,7 @@ export class Observer {
 
     // Executed when whatchdog timer fires
     whatchdogHandler() {
+        Logger.DEBUG("%c Watchdog timer! ", "background:red; color:black");
         this.watchdog.stop();
         this.stopObserving();
     }

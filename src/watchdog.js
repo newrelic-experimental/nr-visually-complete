@@ -16,7 +16,7 @@ export class Watchdog {
 
     /// Stop the whatdog
     stop() {
-        if (this.timeOutRef) {
+        if (this.timeoutRef) {
             window.clearTimeout(this.timeoutRef);
             this.timeoutRef = null;
         }
