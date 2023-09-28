@@ -11,3 +11,4 @@ build
 *.tgz
 *.zip
 dist
+__nrperflib.js
