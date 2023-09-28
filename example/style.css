@@ -14,10 +14,21 @@
     width: 1in;
 }
 
-.bottomdiv {
+.totalbottomdiv {
     position:relative;
     height: 1.1in;
     width: 1.1in;
+    bottom: 1.1in;
+    left: 0in;
+    background-color: blueviolet;
+    border-color: black;
+    border: 1px;
+ }
+
+.partialbottomdiv {
+    position:relative;
+    height: 0.9in;
+    width: 0.9in;
     bottom: 1.1in;
     left: 0in;
     background-color: blueviolet;

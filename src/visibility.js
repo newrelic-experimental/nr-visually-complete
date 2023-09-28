@@ -40,18 +40,22 @@ export class Visibility {
     }
 
     static isBehindOtherElement(element) {
-        const boundingRect = element.getBoundingClientRect()
+        const boundingRect = element.getBoundingClientRect();
         // adjust coordinates to get more accurate results
-        const left = boundingRect.left + 1
-        const right = boundingRect.right - 1
-        const top = boundingRect.top + 1
-        const bottom = boundingRect.bottom - 1
+        const left = boundingRect.left + 1;
+        const right = boundingRect.right - 1;
+        const top = boundingRect.top + 1;
+        const bottom = boundingRect.bottom - 1;
       
-        if(document.elementFromPoint(left, top) !== element) return true
-        if(document.elementFromPoint(right, top) !== element) return true
-        if(document.elementFromPoint(left, bottom) !== element) return true
-        if(document.elementFromPoint(right, bottom) !== element) return true
-      
-        return false
+        if (
+            document.elementFromPoint(left, top) !== element &&
+            document.elementFromPoint(right, top) !== element &&
+            document.elementFromPoint(left, bottom) !== element &&
+            document.elementFromPoint(right, bottom) !== element
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
