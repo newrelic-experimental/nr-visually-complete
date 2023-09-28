@@ -9,6 +9,8 @@ export class Observer {
     initTime = null;
     addedElements = [];
     watchdog = null;
+    loadingTimeOfLastElement = 0;
+    
     elementLoadedHandler = (ev) => { this.elementLoaded(ev) };
     pageLoadHandler = () => { this.pageLoaded() };
 
@@ -35,14 +37,13 @@ export class Observer {
             this.observer.disconnect();
             this.observer = null;
             // Remove all "load" listeners from elements
-            for (let i = 0; i < this.addedElements.length; i++) {
-                let item = this.addedElements[i].item;
+            while (this.addedElements.length > 0) {
+                let item = this.addedElements.pop().item;
                 item.removeEventListener('load', this.elementLoadedHandler);
             }
-
-            this.addedElements = []
-
             window.removeEventListener('load', this.pageLoadHandler);
+
+            Logger.DEBUG("%c Visually Complete Metric = " + this.loadingTimeOfLastElement.toString() + " ms", "background:green; color:white");
         }
     }
 
@@ -58,8 +59,6 @@ export class Observer {
                 } else {
                     Logger.DEBUG("This element is NOT VISIBLE", item)
                 }
-            } else {
-                Logger.DEBUG("Not a DOM element, ignoring", item)
             }
         }
     }
@@ -72,7 +71,7 @@ export class Observer {
     mutationObservedHandler(mutationList, observer) {
         for (const mutation of mutationList) {
             if (mutation.type === "childList") {
-                Logger.DEBUG("A child node has been added or removed", mutation);
+                //Logger.DEBUG("A child node has been added or removed", mutation);
                 this.checkAddedElements(mutation.addedNodes)
             } else if (mutation.type === "attributes") {
                 Logger.DEBUG(`The ${mutation.attributeName} attribute was modified.`);
@@ -90,7 +89,8 @@ export class Observer {
         Logger.DEBUG("Time since init time = ", Math.abs(Date.now() - this.initTime));
         if (this.addedElements.length > 0) {
             let item = this.addedElements[this.addedElements.length - 1];
-            Logger.DEBUG("Loading time of last visible element loaded = ", Math.abs(Date.now() - item.ts));
+            this.loadingTimeOfLastElement = Math.abs(Date.now() - item.ts);
+            Logger.DEBUG("Loading time of last visible element loaded = ", this.loadingTimeOfLastElement);
         }
     }
 
@@ -103,7 +103,7 @@ export class Observer {
 
     // Page load event handler
     pageLoaded() {
-        Logger.DEBUG("%c PAGE LOAD FINISH ", "background:red; color:black");
+        Logger.DEBUG("%c PAGE LOAD FINISHED ", "background:red; color:black");
         this.watchdog.stop();
         this.stopObserving();
     }

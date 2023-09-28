@@ -14,6 +14,17 @@
     width: 1in;
 }
 
+.bottomdiv {
+    position:relative;
+    height: 1.1in;
+    width: 1.1in;
+    bottom: 1.1in;
+    left: 0in;
+    background-color: blueviolet;
+    border-color: black;
+    border: 1px;
+ }
+
 .secondscreen {
     margin-top: 0.5in;
     height: 95vh;
