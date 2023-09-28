@@ -84,14 +84,10 @@ export class Observer {
     // Executed when an element "load" event is fired.
     elementLoaded(ev) {
         this.watchdog.reset();
+        this.loadingTimeOfLastElement = Math.abs(Date.now() - this.initTime);
 
         Logger.DEBUG("%c Element loaded ", 'background:orange; color:white', ev);
-        Logger.DEBUG("Time since init time = ", Math.abs(Date.now() - this.initTime));
-        if (this.addedElements.length > 0) {
-            let item = this.addedElements[this.addedElements.length - 1];
-            this.loadingTimeOfLastElement = Math.abs(Date.now() - item.ts);
-            Logger.DEBUG("Loading time of last visible element loaded = ", this.loadingTimeOfLastElement);
-        }
+        Logger.DEBUG("Loading time of last visible element loaded = ", this.loadingTimeOfLastElement);
     }
 
     // Executed when whatchdog timer fires
