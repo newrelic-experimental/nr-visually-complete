@@ -1,0 +1,26 @@
+{
+  "name": "visually-complete-metric",
+  "version": "0.1.0",
+  "main": "src/index.js",
+  "description": "Visually complete metric observer.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "env NODE_ENV=PROD webpack --mode production",
+    "build:dev": "env NODE_ENV=DEV webpack --mode development && cp dist/nrvcm-* example/js/",
+    "watch:dev": "env NODE_ENV=DEV webpack --mode development --progress --color --watch",
+    "clean": "rm -rf dist && rm -f example/js/nrvcm*"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "author": "Andreu Santarén Llop",
+  "license": "Apache 2.0",
+  "private": true,
+  "devDependencies": {
+    "@babel/cli": "^7.22.15",
+    "@babel/core": "^7.22.17",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}

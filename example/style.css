@@ -1,0 +1,21 @@
+.mainscreen {
+    height: 100vh; /*95% of view port height*/
+    background-color: tomato;
+}
+
+.imageclass {
+    height: 1in;
+    width: 1in;
+}
+
+.hiddenimageclass {
+    visibility: hidden;
+    height: 1in;
+    width: 1in;
+}
+
+.secondscreen {
+    margin-top: 0.5in;
+    height: 95vh;
+    background-color: aquamarine;
+}

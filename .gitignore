@@ -1,0 +1,13 @@
+.DS_Store
+example/js/nrvcm*.bundle.*
+node_modules
+_MACOSX/
+.DS_Store
+build
+.idea
+*.log
+*.swp
+*.iml
+*.tgz
+*.zip
+dist
