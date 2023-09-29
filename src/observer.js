@@ -42,8 +42,15 @@ export class Observer {
         if (this.observer) {
             Logger.DEBUG("Stop Observing")
 
+            // Disconnect observer
             this.observer.disconnect();
             this.observer = null;
+
+            // Generate Vc metric
+            if (typeof newrelic !== "undefined") {
+                newrelic.interaction().setAttribute("vizComplete", this.loadingTimeOfLastElement);
+            }
+
             // Remove all "load" listeners from elements
             while (this.addedElements.length > 0) {
                 let item = this.addedElements.pop().item;
@@ -52,10 +59,6 @@ export class Observer {
             window.removeEventListener('load', this.pageLoadHandler);
 
             Logger.DEBUG("%c Visually Complete Metric = " + this.loadingTimeOfLastElement.toString() + " ms", "background:green; color:white");
-
-            if (typeof newrelic !== "undefined") {
-                newrelic.interaction().setAttribute("vizComplete", this.loadingTimeOfLastElement);
-            }
         }
     }
 
