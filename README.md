@@ -45,7 +45,7 @@ Load the script in your index HTML:
     </head>
 ```
 
-NR Visually Complete requieres the [New Relic Browser Agent](https://docs.newrelic.com/docs/browser/browser-monitoring/installation/install-browser-monitoring-agent/) to generate data.
+NR Visually Complete requieres the [New Relic Browser Agent](https://docs.newrelic.com/docs/browser/browser-monitoring/installation/install-browser-monitoring-agent/) to generate data. You should load it early in your page's head.
 
 ## Support
 
