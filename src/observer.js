@@ -52,6 +52,10 @@ export class Observer {
             window.removeEventListener('load', this.pageLoadHandler);
 
             Logger.DEBUG("%c Visually Complete Metric = " + this.loadingTimeOfLastElement.toString() + " ms", "background:green; color:white");
+
+            if (typeof newrelic !== "undefined") {
+                newrelic.interaction().setAttribute("vizComplete", this.loadingTimeOfLastElement);
+            }
         }
     }
 
