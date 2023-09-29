@@ -16,7 +16,7 @@ class StopOrigin {
     static Whatchdog = new StopOrigin('Watchdog');
     static PageLoad = new StopOrigin('PageLoad');
     constructor(val) {
-        this.val = val;
+        this.val = eval(`() => { return '${val}'; }`);
     }
 }
 
@@ -58,7 +58,7 @@ export class Observer {
             if (typeof newrelic !== "undefined") {
                 newrelic.interaction()
                     .setAttribute("vcValue", this.loadingTimeOfLastElement)
-                    .setAttribute("vcStopOrig", stopOrigin.val);
+                    .setAttribute("vcStopOrig", stopOrigin.val());
             }
 
             // Remove all "load" listeners from elements
