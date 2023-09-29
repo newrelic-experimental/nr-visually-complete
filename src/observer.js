@@ -12,6 +12,14 @@ Limitations:
   Alternative, reload the image (https://jsfiddle.net/tovic/gmzSG/)
 */
 
+class StopOrigin {
+    static Whatchdog = new StopOrigin('Watchdog');
+    static PageLoad = new StopOrigin('PageLoad');
+    constructor(val) {
+        this.val = val;
+    }
+}
+
 export class Observer {
     observer = null;
     initTime = null;
@@ -38,7 +46,7 @@ export class Observer {
     }
 
     /// Stop observing mutation events
-    stopObserving() {
+    stopObserving(stopOrigin) {
         if (this.observer) {
             Logger.DEBUG("Stop Observing")
 
@@ -48,7 +56,9 @@ export class Observer {
 
             // Generate VC metric
             if (typeof newrelic !== "undefined") {
-                newrelic.interaction().setAttribute("vizComplete", this.loadingTimeOfLastElement);
+                newrelic.interaction()
+                    .setAttribute("vcValue", this.loadingTimeOfLastElement)
+                    .setAttribute("vcStopOrig", stopOrigin.val);
             }
 
             // Remove all "load" listeners from elements
@@ -109,13 +119,13 @@ export class Observer {
     whatchdogHandler() {
         Logger.DEBUG("%c Watchdog timer! ", "background:red; color:black");
         this.watchdog.stop();
-        this.stopObserving();
+        this.stopObserving(StopOrigin.Whatchdog);
     }
 
     // Page load event handler
     pageLoaded() {
         Logger.DEBUG("%c PAGE LOAD FINISHED ", "background:red; color:black");
         this.watchdog.stop();
-        this.stopObserving();
+        this.stopObserving(StopOrigin.PageLoad);
     }
 }
