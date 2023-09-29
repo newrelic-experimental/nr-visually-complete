@@ -3,7 +3,7 @@ export class Visibility {
         return (
             this.isInViewport(elem) &&
             this.isStyleVisible(elem) &&
-            !this.isBehindOtherElement(elem)
+            this.isNotBehindSomething(elem)
         );
     }
 
@@ -37,6 +37,10 @@ export class Visibility {
             style.visibility !== 'hidden' &&
             elem["type"] !== 'hidden'
         );
+    }
+
+    static isNotBehindSomething(element) {
+        return !this.isBehindOtherElement(element);
     }
 
     static isBehindOtherElement(element) {

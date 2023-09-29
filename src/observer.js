@@ -46,7 +46,7 @@ export class Observer {
             this.observer.disconnect();
             this.observer = null;
 
-            // Generate Vc metric
+            // Generate VC metric
             if (typeof newrelic !== "undefined") {
                 newrelic.interaction().setAttribute("vizComplete", this.loadingTimeOfLastElement);
             }
