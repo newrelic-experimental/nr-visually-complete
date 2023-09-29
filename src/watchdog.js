@@ -8,13 +8,13 @@ export class Watchdog {
         this.millis = millis;
     }
 
-    /// Start/Reset the whatdog
+    /// Start/Reset the watchdog
     reset() {
         this.stop();
         this.timeoutRef = window.setTimeout(() => { this.callback() }, this.millis);
     }
 
-    /// Stop the whatdog
+    /// Stop the watchdog
     stop() {
         if (this.timeoutRef) {
             window.clearTimeout(this.timeoutRef);
