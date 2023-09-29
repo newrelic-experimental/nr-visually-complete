@@ -1,6 +1,7 @@
 import { Logger } from "./logger";
 import { Visibility } from "./visibility";
 import { Watchdog } from "./watchdog";
+import { Elements } from "./elements";
 
 /* TODO:
 - Set "initTime" externally in case we have to start the observer later.
@@ -23,7 +24,7 @@ class StopOrigin {
 export class Observer {
     observer = null;
     initTime = null;
-    addedElements = [];
+    trackedElements = null;
     watchdog = null;
     loadingTimeOfLastElement = 0;
     
@@ -33,6 +34,7 @@ export class Observer {
     constructor () {
         Logger.DEBUG("Construct Observer")
 
+        this.trackedElements = new Elements(this.elementLoadedHandler);
         this.watchdog = new Watchdog(15000, () => { this.whatchdogHandler() });
         this.observer = new MutationObserver((ml, obs) => { this.mutationObservedHandler(ml, obs) });
     }
@@ -62,10 +64,7 @@ export class Observer {
             }
 
             // Remove all "load" listeners from elements
-            while (this.addedElements.length > 0) {
-                let item = this.addedElements.pop().item;
-                item.removeEventListener('load', this.elementLoadedHandler);
-            }
+            this.trackedElements.untrackAll();
             window.removeEventListener('load', this.pageLoadHandler);
 
             Logger.DEBUG("%c Visually Complete Metric = " + this.loadingTimeOfLastElement.toString() + " ms", "background:green; color:white");
@@ -79,8 +78,7 @@ export class Observer {
             if (item instanceof Element) {
                 if (Visibility.isVisible(item)) {
                     Logger.DEBUG("This element is VISIBLE", item)
-                    this.addedElements.push({"item":item, "ts": Date.now()});
-                    item.addEventListener('load', this.elementLoadedHandler);
+                    this.trackedElements.trackElement(item);
                 } else {
                     Logger.DEBUG("This element is NOT VISIBLE", item)
                 }
