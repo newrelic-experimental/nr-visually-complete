@@ -60,7 +60,7 @@ export class Observer {
     }
 
     /// Add load events to all added elements
-    checkAddedElements(arraynodes) {
+    processAddedElements(arraynodes) {
         for (let i = 0; i < arraynodes.length; i++) {
             let item = arraynodes[i];
             if (item instanceof Element) {
@@ -84,7 +84,7 @@ export class Observer {
         for (const mutation of mutationList) {
             if (mutation.type === "childList") {
                 //Logger.DEBUG("A child node has been added or removed", mutation);
-                this.checkAddedElements(mutation.addedNodes)
+                this.processAddedElements(mutation.addedNodes)
             } else if (mutation.type === "attributes") {
                 Logger.DEBUG(`The ${mutation.attributeName} attribute was modified.`);
             } else {
