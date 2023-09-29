@@ -1,5 +1,5 @@
 {
-  "name": "visually-complete-metric",
+  "name": "nr-visually-complete",
   "version": "0.1.0",
   "main": "src/index.js",
   "description": "Visually complete metric observer.",
