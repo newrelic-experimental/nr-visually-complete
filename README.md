@@ -49,6 +49,16 @@ Load the script in your index HTML:
 
 NR Visually Complete requieres the [New Relic Browser Agent](https://docs.newrelic.com/docs/browser/browser-monitoring/installation/install-browser-monitoring-agent/) to generate data. You should load it early in your page's head.
 
+## Example
+
+To run the example just open a terminal on the `example` folder and run:
+
+```
+python3 -m http.server 8008
+```
+
+Then open the following [link](http://0.0.0.0:8008/).
+
 ## Support
 
 New Relic has open-sourced this project. This project is provided AS-IS WITHOUT WARRANTY OR DEDICATED SUPPORT. Issues and contributions should be reported to the project here on GitHub.
