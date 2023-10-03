@@ -18,7 +18,7 @@ class StopOrigin {
     static Whatchdog = new StopOrigin('Watchdog');
     static PageLoad = new StopOrigin('PageLoad');
     constructor(val) {
-        this.val = eval(`() => { return '${val}'; }`);
+        this.val = val;
     }
 }
 
@@ -72,7 +72,7 @@ export class Observer {
                 if (this.loadingTimeOfLastElement > 0) {
                     newrelic.interaction()
                         .setAttribute("vcValue", this.loadingTimeOfLastElement)
-                        .setAttribute("vcStopOrig", stopOrigin.val());
+                        .setAttribute("vcStopOrig", stopOrigin.val);
                 } else {
                     Logger.DEBUG("loadingTimeOfLastElement is zero, not generatic VC metric.");
                 }
