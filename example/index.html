@@ -11,6 +11,7 @@
         <div class="mainscreen">
             <h1>Main Screen</h1>
             <p>This is the main screen</p>
+            <p><a href="#secondary">Go to Secondary Screen</a></p>
             <div>
                 <img src="img_main/1.jpg" class="imageclass">
                 <div class="totalbottomdiv"></div>
@@ -18,7 +19,18 @@
                 <img src="img_main/3.jpg" class="imageclass">
                 <div class="partialbottomdiv"></div>
                 <img src="img_main/4.jpg" class="imageclass">
-                <div class="divwithimg"></div>
+                <!-- <div class="divwithimg"></div> -->
+                <iframe
+                    title="Framed OSM"
+                    width="200"
+                    height="200"
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"></iframe>
+                <iframe
+                    title="Framed Images"
+                    width="200"
+                    height="200"
+                    src="https://www.bing.com/images/search?q=images&form=HDRSC3&first=1"></iframe>
+                <!-- TODO: add SVG tag -->
             </div>
             <img src="img_main/5.jpg" class="hiddenimageclass">
             <img src="img_main/6.jpg" class="hiddenimageclass">
@@ -31,7 +43,7 @@
             <img src="img_main/13.jpg" class="hiddenimageclass">
             <!-- <img src="img_main/14.jpg" class="hiddenimageclass"> -->
         </div>
-        <div class="secondscreen">
+        <div id="secondary" class="secondscreen">
             <h1>Secondary Screen</h1>
             <p>This is the secondary screen</p>
             <img src="img_second/1.jpg" class="imageclass">

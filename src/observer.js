@@ -7,6 +7,7 @@ import { Elements } from "./elements";
 - Set "initTime" externally in case we have to start the observer later.
 - Monitor AJAX requests.
 - Custom loads, elements not tracked automatically. App must signal it.
+- SVG images?
 
 Limitations:
 - Not possible to detect background image load set as a style (https://www.sitepoint.com/community/t/onload-for-background-image/6462).
