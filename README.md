@@ -6,11 +6,11 @@ This module captures the Visually Complete (VC) metric on a web page. VC is the 
 
 ## Value
 
-It makes use of the New Relic Browser Agent to attach an attributed, called `vcValue`, to [BrowserInteraction](https://docs.newrelic.com/attribute-dictionary/?event=BrowserInteraction) events.
+It makes use of the New Relic Browser Agent to attach an attributed, called `vcValue`, to [BrowserInteraction](https://docs.newrelic.com/attribute-dictionary/?event=BrowserInteraction) events of type `initialPageLoad`.
 
 This attribute is an integer that represents a time in milliseconds.
 
-Additionally, it generates another attribute called `vcStopOrig`, to indicate what caused the event. In normal ciscumstances the value will be `PageLoad`, which means the page loaded normally. If the value is `Watchdog`, it means the page load requiered too much time and the watchdog timer fired.
+Additionally, it generates another attribute called `vcStopOrig`, to indicate what caused the event. In normal ciscumstances the value will be `PageLoad`, which means the page loaded normally. If the value is `Watchdog`, it means the page load requiered too much time and the watchdog timer fired. In this case, the `vcValue` will indicate the time of the last element loaded before the watchdog triggered.
 
 ## Installation & Building
 

@@ -23,6 +23,7 @@ class StopOrigin {
 }
 
 export class Observer {
+    isObserving = false;
     observer = null;
     initTime = null;
     trackedElements = null;
@@ -42,26 +43,41 @@ export class Observer {
 
     /// Start observing mutation events
     startObserving(targetNode) {
-        this.initTime = Date.now();
-        this.observer.observe(targetNode, { attributes: true, childList: true, subtree: true });
-        this.watchdog.reset();
-        window.addEventListener("load", this.pageLoadHandler);
+        if (!this.isObserving) {
+            Logger.DEBUG("Start Observing");
+
+            this.isObserving = true;
+            this.initTime = Date.now();
+            this.loadingTimeOfLastElement = 0;
+            this.observer.observe(targetNode, { attributes: true, childList: true, subtree: true });
+            this.watchdog.reset();
+            window.addEventListener("load", this.pageLoadHandler);
+        } else {
+            Logger.WARNING("Called 'startObserbing' but already observing");
+        }
     }
 
     /// Stop observing mutation events
     stopObserving(stopOrigin) {
-        if (this.observer) {
-            Logger.DEBUG("Stop Observing")
+        if (this.isObserving) {
+            this.isObserving = false;
+
+            Logger.DEBUG("Stop Observing");
 
             // Disconnect observer
             this.observer.disconnect();
-            this.observer = null;
 
             // Generate VC metric
             if (typeof newrelic !== "undefined") {
-                newrelic.interaction()
-                    .setAttribute("vcValue", this.loadingTimeOfLastElement)
-                    .setAttribute("vcStopOrig", stopOrigin.val());
+                if (this.loadingTimeOfLastElement > 0) {
+                    newrelic.interaction()
+                        .setAttribute("vcValue", this.loadingTimeOfLastElement)
+                        .setAttribute("vcStopOrig", stopOrigin.val());
+                } else {
+                    Logger.DEBUG("loadingTimeOfLastElement is zero, not generatic VC metric.");
+                }
+            } else {
+                Logger.ERROR("New Relic browser agent not loaded");
             }
 
             // Remove all "load" listeners from elements
@@ -69,6 +85,8 @@ export class Observer {
             window.removeEventListener('load', this.pageLoadHandler);
 
             Logger.DEBUG("%c Visually Complete Metric = " + this.loadingTimeOfLastElement.toString() + " ms", "background:green; color:white");
+        } else {
+            Logger.WARNING("Called 'stopObserving' but not observing");
         }
     }
 
