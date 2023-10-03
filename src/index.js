@@ -1,10 +1,9 @@
-export { Observer } from "./observer";
-
 import { Observer } from "./observer";
 import { Logger } from "./logger";
 
+export const observer = new Observer();
+
 // Start Visually Complete Metric observer on script load
-let observer = new Observer();
 observer.startObserving(document);
 
 history._nrvc_OldPushState = history.pushState;
