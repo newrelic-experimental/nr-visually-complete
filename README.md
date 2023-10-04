@@ -38,18 +38,21 @@ Results will be located in `dist`.
 
 ## Usage
 
-Load the script in your index HTML:
+Load the script in your index HTML and call init method:
 
 ```html
     <head>
         <!-- ... -->
         <script type="text/javascript" src="nrvcm-X.Y.Z.bundle.js"></script>
+        <script>
+            nrvcm.init();
+        </script>
     </head>
 ```
 
 NR Visually Complete requieres the [New Relic Browser Agent](https://docs.newrelic.com/docs/browser/browser-monitoring/installation/install-browser-monitoring-agent/) to generate data. You should load it early in your page's head.
 
-This component starts observing changes automatically as soon as it's loaded, but it can also be called manually. For example after a custom action, like a user clicking a tab or an AJAX request that will update the DOM. The way to call it is:
+After calling `init()`, it will immediately start observing changes in the page to calculate the VC metric. It will also register listeners for navigation events and trigger the VC metric observer automatically when a route change happens. But in some situations this automatic behavior might not be required/desired, for these cases the VC observer can be called manually. For example after a custom action, like a user clicking a tab or an AJAX request that will update the DOM. The way to call it is:
 
 ```javascript
 nrvcm.observer.startObserving(document);
