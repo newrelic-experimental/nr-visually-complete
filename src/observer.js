@@ -53,7 +53,7 @@ export class Observer {
             this.watchdog.reset();
             window.addEventListener("load", this.pageLoadHandler);
         } else {
-            Logger.WARNING("Called 'startObserbing' but already observing");
+            Logger.WARNING("Called 'startObserving' but already observing");
         }
     }
 
