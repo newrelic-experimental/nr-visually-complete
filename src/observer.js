@@ -15,8 +15,8 @@ Limitations:
 */
 
 class StopOrigin {
-    static Whatchdog = new StopOrigin('Watchdog');
-    static PageLoad = new StopOrigin('PageLoad');
+    static WATCHDOG = new StopOrigin('watchdog');
+    static PAGELOAD = new StopOrigin('pageload');
     constructor(val) {
         this.val = val;
     }
@@ -136,13 +136,13 @@ export class Observer {
     whatchdogHandler() {
         Logger.DEBUG("%c Watchdog timer! ", "background:red; color:white");
         this.watchdog.stop();
-        this.stopObserving(StopOrigin.Whatchdog);
+        this.stopObserving(StopOrigin.WATCHDOG);
     }
 
     // Page load event handler
     pageLoaded() {
         Logger.DEBUG("%c PAGE LOAD FINISHED ", "background:red; color:white");
         this.watchdog.stop();
-        this.stopObserving(StopOrigin.PageLoad);
+        this.stopObserving(StopOrigin.PAGELOAD);
     }
 }
