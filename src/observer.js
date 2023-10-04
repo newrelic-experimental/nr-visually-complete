@@ -74,10 +74,10 @@ export class Observer {
                         .setAttribute("vcValue", this.loadingTimeOfLastElement)
                         .setAttribute("vcStopOrig", stopOrigin.val);
                 } else {
-                    Logger.DEBUG("loadingTimeOfLastElement is zero, not generatic VC metric.");
+                    Logger.WARNING("loadingTimeOfLastElement is zero, not generatic VC metric.");
                 }
             } else {
-                Logger.ERROR("New Relic browser agent not loaded");
+                Logger.ERROR("New Relic browser agent not loaded, VC metric not generated");
             }
 
             // Remove all "load" listeners from elements
@@ -134,14 +134,14 @@ export class Observer {
 
     // Executed when whatchdog timer fires
     whatchdogHandler() {
-        Logger.DEBUG("%c Watchdog timer! ", "background:red; color:black");
+        Logger.DEBUG("%c Watchdog timer! ", "background:red; color:white");
         this.watchdog.stop();
         this.stopObserving(StopOrigin.Whatchdog);
     }
 
     // Page load event handler
     pageLoaded() {
-        Logger.DEBUG("%c PAGE LOAD FINISHED ", "background:red; color:black");
+        Logger.DEBUG("%c PAGE LOAD FINISHED ", "background:red; color:white");
         this.watchdog.stop();
         this.stopObserving(StopOrigin.PageLoad);
     }
