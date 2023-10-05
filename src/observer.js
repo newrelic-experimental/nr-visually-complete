@@ -61,6 +61,7 @@ export class Observer {
     stopObserving(stopOrigin) {
         if (this.isObserving) {
             this.isObserving = false;
+            this.watchdog.stop();
 
             Logger.DEBUG("Stop Observing");
 
@@ -135,14 +136,12 @@ export class Observer {
     // Executed when whatchdog timer fires
     whatchdogHandler() {
         Logger.DEBUG("%c Watchdog timer! ", "background:red; color:white");
-        this.watchdog.stop();
         this.stopObserving(StopOrigin.WATCHDOG);
     }
 
     // Page load event handler
     pageLoaded() {
         Logger.DEBUG("%c PAGE LOAD FINISHED ", "background:red; color:white");
-        this.watchdog.stop();
         this.stopObserving(StopOrigin.PAGELOAD);
     }
 }
