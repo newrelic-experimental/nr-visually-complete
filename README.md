@@ -12,7 +12,7 @@ This attribute is an integer that represents a time in milliseconds.
 
 Additionally, it generates another attribute called `vcStopOrig`, to indicate what caused the event. In normal ciscumstances the value will be `pageload`, which means the page loaded normally. If the value is `watchdog`, it means the page load requiered too much time and the watchdog timer fired. In this case, the `vcValue` will indicate the time of the last element loaded before the watchdog triggered.
 
-## Installation & Building
+## Build
 
 Clone this repo and then run:
 
