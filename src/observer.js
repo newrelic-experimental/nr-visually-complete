@@ -131,12 +131,12 @@ export class Observer {
     // Executed when whatchdog timer fires
     whatchdogHandler() {
         Logger.DEBUG("%c Watchdog timer! ", "background:red; color:white");
-        this.stopObserving(WATCHDOG.toString());
+        this.stopObserving(WATCHDOG);
     }
 
     // Page load event handler
     pageLoaded() {
         Logger.DEBUG("%c PAGE LOAD FINISHED ", "background:red; color:white");
-        this.stopObserving(PAGELOAD.toString());
+        this.stopObserving(PAGELOAD);
     }
 }
