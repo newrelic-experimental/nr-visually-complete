@@ -14,13 +14,8 @@ Limitations:
   Alternative, reload the image (https://jsfiddle.net/tovic/gmzSG/)
 */
 
-class StopOrigin {
-    static WATCHDOG = new StopOrigin('watchdog');
-    static PAGELOAD = new StopOrigin('pageload');
-    constructor(val) {
-        this.val = val;
-    }
-}
+const WATCHDOG = 'watchdog';
+const PAGELOAD = 'pageload';
 
 export class Observer {
     isObserving = false;
@@ -73,7 +68,7 @@ export class Observer {
                 if (this.loadingTimeOfLastElement > 0) {
                     newrelic.interaction()
                         .setAttribute("vcValue", this.loadingTimeOfLastElement)
-                        .setAttribute("vcStopOrig", stopOrigin.val);
+                        .setAttribute("vcStopOrig", stopOrigin);
                 } else {
                     Logger.WARNING("loadingTimeOfLastElement is zero, not generatic VC metric.");
                 }
@@ -136,12 +131,12 @@ export class Observer {
     // Executed when whatchdog timer fires
     whatchdogHandler() {
         Logger.DEBUG("%c Watchdog timer! ", "background:red; color:white");
-        this.stopObserving(StopOrigin.WATCHDOG);
+        this.stopObserving(WATCHDOG.toString());
     }
 
     // Page load event handler
     pageLoaded() {
         Logger.DEBUG("%c PAGE LOAD FINISHED ", "background:red; color:white");
-        this.stopObserving(StopOrigin.PAGELOAD);
+        this.stopObserving(PAGELOAD.toString());
     }
 }
