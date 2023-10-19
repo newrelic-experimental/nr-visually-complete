@@ -51,15 +51,11 @@ export class Visibility {
         const top = boundingRect.top + 1;
         const bottom = boundingRect.bottom - 1;
       
-        if (
+        return (
             document.elementFromPoint(left, top) !== element &&
             document.elementFromPoint(right, top) !== element &&
             document.elementFromPoint(left, bottom) !== element &&
             document.elementFromPoint(right, bottom) !== element
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+        );
     }
 }
