@@ -32,7 +32,7 @@ export class Observer {
         Logger.DEBUG("Construct Observer")
 
         this.trackedElements = new Elements(this.elementLoadedHandler);
-        this.watchdog = new Watchdog(15000, () => { this.whatchdogHandler() });
+        this.watchdog = new Watchdog(5000, () => { this.whatchdogHandler() });
         this.observer = new MutationObserver((ml, obs) => { this.mutationObservedHandler(ml, obs) });
     }
 
@@ -92,8 +92,15 @@ export class Observer {
             let item = arraynodes[i];
             if (item instanceof Element) {
                 if (Visibility.isVisible(item)) {
-                    Logger.DEBUG("This element is VISIBLE", item)
-                    this.trackedElements.trackElement(item);
+                    Logger.DEBUG("This element is VISIBLE", item);
+                    if (item.tagName == "IMG") {
+                        this.trackedElements.trackElement(item);
+                    } else {
+                        let imageList = Array.from(item.querySelectorAll('img'));
+                        for (const img of imageList) {
+                            this.trackedElements.trackElement(img);
+                        }
+                    }
                 } else {
                     Logger.DEBUG("This element is NOT VISIBLE", item)
                 }
@@ -137,6 +144,9 @@ export class Observer {
     // Page load event handler
     pageLoaded() {
         Logger.DEBUG("%c PAGE LOAD FINISHED ", "background:red; color:white");
-        this.stopObserving(PAGELOAD);
+
+        //TODO: we have to fix premature page load, it fires before the list of elements is loaded
+        Logger.DEBUG("%c DO NOTHING, WAIT FOR WATCHDOG ", "background:red; color:white");
+        //this.stopObserving(PAGELOAD);
     }
 }
