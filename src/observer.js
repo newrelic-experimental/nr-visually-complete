@@ -3,11 +3,8 @@ import { Visibility } from "./visibility";
 import { Watchdog } from "./watchdog";
 import { Elements } from "./elements";
 
-/* TODO:
-- Set "initTime" externally in case we have to start the observer later.
-- Monitor AJAX requests.
-- Custom loads, elements not tracked automatically. App must signal it.
-- SVG images?
+/*
+TODO: track XMLHttpRequest and fetch.
 
 Limitations:
 - Not possible to detect background image load set as a style (https://www.sitepoint.com/community/t/onload-for-background-image/6462).
@@ -18,11 +15,13 @@ const WATCHDOG = 'watchdog';
 const PAGELOAD = 'pageload';
 
 export class Observer {
+    firstLoadInitTime = null;
     isObserving = false;
     observer = null;
     initTime = null;
     trackedElements = null;
     watchdog = null;
+    finishChecker = null;
     loadingTimeOfLastElement = 0;
     
     elementLoadedHandler = (ev) => { this.elementLoaded(ev) };
@@ -30,9 +29,9 @@ export class Observer {
 
     constructor () {
         Logger.DEBUG("Construct Observer")
-
         this.trackedElements = new Elements(this.elementLoadedHandler);
-        this.watchdog = new Watchdog(2000, () => { this.whatchdogHandler() });
+        this.watchdog = new Watchdog(10000, () => { this.whatchdogHandler() });
+        this.finishChecker = new Watchdog(500, () => { this.finishCheckerHandler() });
         this.observer = new MutationObserver((ml, obs) => { this.mutationObservedHandler(ml, obs) });
     }
 
@@ -46,6 +45,7 @@ export class Observer {
             this.loadingTimeOfLastElement = 0;
             this.observer.observe(targetNode, { attributes: true, childList: true, subtree: true });
             this.watchdog.reset();
+            this.finishChecker.reset();
             window.addEventListener("load", this.pageLoadHandler);
         } else {
             Logger.WARNING("Called 'startObserving' but already observing");
@@ -57,6 +57,8 @@ export class Observer {
         if (this.isObserving) {
             this.isObserving = false;
             this.watchdog.stop();
+            this.finishChecker.stop();
+            this.firstLoadInitTime = null;
 
             Logger.DEBUG("Stop Observing");
 
@@ -102,6 +104,9 @@ export class Observer {
                         }
                     }
                     this.watchdog.reset();
+                    this.finishChecker.reset();
+                    // Elements other than images won't fire a "load" evemt but must be counted for the VC metric.
+                    this.computeElementLoadingTime();
                 } else {
                     Logger.DEBUG("This element is NOT VISIBLE", item)
                 }
@@ -130,22 +135,46 @@ export class Observer {
     // Executed when an element "load" event is fired.
     elementLoaded(ev) {
         this.watchdog.reset();
-        this.loadingTimeOfLastElement = Math.abs(Date.now() - this.initTime);
+        this.finishChecker.reset();
+        this.trackedElements.elementLoaded();
+        this.computeElementLoadingTime();
 
         Logger.DEBUG("%c Element loaded ", 'background:orange; color:white', ev);
         Logger.DEBUG("Loading time of last visible element loaded = ", this.loadingTimeOfLastElement);
+        Logger.DEBUG("pending elements = ", this.trackedElements.pendingElements());
+    }
+
+    computeElementLoadingTime() {
+        if (this.firstLoadInitTime == null) {
+            // Not initial page load
+            this.loadingTimeOfLastElement = Math.abs(Date.now() - this.initTime);
+        } else {
+            // Initial page load, use a different time reference, the page load start time
+            this.loadingTimeOfLastElement = Math.abs(Date.now() - this.firstLoadInitTime);
+        }
     }
 
     // Executed when whatchdog timer fires
     whatchdogHandler() {
-        Logger.DEBUG("%c Watchdog timer ", "background:red; color:white");
+        Logger.DEBUG("%c Watchdog timer fired ", "background:red; color:white");
         this.stopObserving(WATCHDOG);
+
+        console.log(window.performance);
+    }
+
+    // Executed when whatchdog timer fires
+    finishCheckerHandler() {
+        Logger.DEBUG("%c Finish checker ", "background:blue; color:white");
+        if (this.trackedElements.pendingElements() == 0) {
+            Logger.DEBUG("%c FINISHED LOADING ", "background:red; color:white");
+            this.stopObserving(PAGELOAD);
+        }
     }
 
     // Page load event handler.
     pageLoaded() {
-        Logger.DEBUG("%c Load event received ", "background:red; color:white");
-        // NOTE: Load event is fired before Ajaz requests are made, and so is useless for our purpose.
+        Logger.DEBUG("%c Window Load event received ", "background:red; color:white");
+        // NOTE: Load event is fired before dynamic content is ready (AJAX requests), and thus is useless for our purpose.
         //this.stopObserving(PAGELOAD);
     }
 }
