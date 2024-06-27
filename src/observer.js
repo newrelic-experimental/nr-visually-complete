@@ -32,7 +32,7 @@ export class Observer {
         Logger.DEBUG("Construct Observer")
 
         this.trackedElements = new Elements(this.elementLoadedHandler);
-        this.watchdog = new Watchdog(5000, () => { this.whatchdogHandler() });
+        this.watchdog = new Watchdog(2000, () => { this.whatchdogHandler() });
         this.observer = new MutationObserver((ml, obs) => { this.mutationObservedHandler(ml, obs) });
     }
 
@@ -101,6 +101,7 @@ export class Observer {
                             this.trackedElements.trackElement(img);
                         }
                     }
+                    this.watchdog.reset();
                 } else {
                     Logger.DEBUG("This element is NOT VISIBLE", item)
                 }
@@ -137,16 +138,14 @@ export class Observer {
 
     // Executed when whatchdog timer fires
     whatchdogHandler() {
-        Logger.DEBUG("%c Watchdog timer! ", "background:red; color:white");
+        Logger.DEBUG("%c Watchdog timer ", "background:red; color:white");
         this.stopObserving(WATCHDOG);
     }
 
-    // Page load event handler
+    // Page load event handler.
     pageLoaded() {
-        Logger.DEBUG("%c PAGE LOAD FINISHED ", "background:red; color:white");
-
-        //TODO: we have to fix premature page load, it fires before the list of elements is loaded
-        Logger.DEBUG("%c DO NOTHING, WAIT FOR WATCHDOG ", "background:red; color:white");
+        Logger.DEBUG("%c Load event received ", "background:red; color:white");
+        // NOTE: Load event is fired before Ajaz requests are made, and so is useless for our purpose.
         //this.stopObserving(PAGELOAD);
     }
 }
