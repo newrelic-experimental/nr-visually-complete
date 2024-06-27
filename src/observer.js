@@ -25,7 +25,6 @@ export class Observer {
     loadingTimeOfLastElement = 0;
     
     elementLoadedHandler = (ev) => { this.elementLoaded(ev) };
-    pageLoadHandler = () => { this.pageLoaded() };
 
     constructor () {
         Logger.DEBUG("Construct Observer")
@@ -46,7 +45,6 @@ export class Observer {
             this.observer.observe(targetNode, { attributes: true, childList: true, subtree: true });
             this.watchdog.reset();
             this.finishChecker.reset();
-            window.addEventListener("load", this.pageLoadHandler);
         } else {
             Logger.WARNING("Called 'startObserving' but already observing");
         }
@@ -80,7 +78,6 @@ export class Observer {
 
             // Remove all "load" listeners from elements
             this.trackedElements.untrackAll();
-            window.removeEventListener('load', this.pageLoadHandler);
 
             Logger.DEBUG("%c Visually Complete Metric = " + this.loadingTimeOfLastElement.toString() + " ms", "background:green; color:white");
         } else {
@@ -158,8 +155,6 @@ export class Observer {
     whatchdogHandler() {
         Logger.DEBUG("%c Watchdog timer fired ", "background:red; color:white");
         this.stopObserving(WATCHDOG);
-
-        console.log(window.performance);
     }
 
     // Executed when whatchdog timer fires
@@ -169,12 +164,5 @@ export class Observer {
             Logger.DEBUG("%c FINISHED LOADING ", "background:red; color:white");
             this.stopObserving(PAGELOAD);
         }
-    }
-
-    // Page load event handler.
-    pageLoaded() {
-        Logger.DEBUG("%c Window Load event received ", "background:red; color:white");
-        // NOTE: Load event is fired before dynamic content is ready (AJAX requests), and thus is useless for our purpose.
-        //this.stopObserving(PAGELOAD);
     }
 }
