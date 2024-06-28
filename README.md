@@ -2,7 +2,7 @@
 
 # NR Visually Complete
 
-This module captures the Visually Complete (VC) metric on a web page. VC is the time requiered for all visible elements on the screen to load.
+This module captures the Visually Complete (VC) metric on browser SPAs. VC is the time requiered for all visible elements on the screen to load.
 
 ## Value
 
