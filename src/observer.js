@@ -70,7 +70,7 @@ export class Observer {
                         .setAttribute("vcValue", this.loadingTimeOfLastElement)
                         .setAttribute("vcStopOrig", stopOrigin);
                 } else {
-                    Logger.WARNING("loadingTimeOfLastElement is zero, not generatic VC metric.");
+                    Logger.WARNING("loadingTimeOfLastElement is zero, not generating VC metric.");
                 }
             } else {
                 Logger.ERROR("New Relic browser agent not loaded, VC metric not generated");

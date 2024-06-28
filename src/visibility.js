@@ -12,14 +12,6 @@ export class Visibility {
         );
     }
 
-    // static isVisible(elem) {
-    //     return (
-    //         this.isInViewport(elem) &&
-    //         this.isStyleVisible(elem) &&
-    //         this.isNotBehindSomething(elem)
-    //     );
-    // }
-
     /// Check if elements lies within viewport limits, with a 5% non-overlapping threshold in all directions.
     static isInViewport(elem) {
         const threshold = 0.05;
@@ -51,24 +43,4 @@ export class Visibility {
             elem["type"] !== 'hidden'
         );
     }
-
-    // static isNotBehindSomething(element) {
-    //     return !this.isBehindOtherElement(element);
-    // }
-
-    // static isBehindOtherElement(element) {
-    //     const boundingRect = element.getBoundingClientRect();
-    //     // adjust coordinates to get more accurate results
-    //     const left = boundingRect.left + 1;
-    //     const right = boundingRect.right - 1;
-    //     const top = boundingRect.top + 1;
-    //     const bottom = boundingRect.bottom - 1;
-      
-    //     return (
-    //         document.elementFromPoint(left, top) !== element &&
-    //         document.elementFromPoint(right, top) !== element &&
-    //         document.elementFromPoint(left, bottom) !== element &&
-    //         document.elementFromPoint(right, bottom) !== element
-    //     );
-    // }
 }
