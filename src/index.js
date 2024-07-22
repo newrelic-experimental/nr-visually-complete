@@ -7,15 +7,8 @@ observer.firstLoadInitTime = Date.now();
 
 /// Init route change observer and starts VC measurement immediately.
 export function init() {
-    history._nrvc_OldPushState = history.pushState;
-    history.pushState = function(state, unused, url) {
-        Logger.DEBUG("Push state change, trigger observer");
-        history._nrvc_OldPushState(state, unused, url);
-        observer.startObserving(document);
-    }
-
-    window.addEventListener("hashchange", function(ev) {
-        Logger.DEBUG("Hash change, trigger observer");
+    document.body.addEventListener("click", function (e) {
+        Logger.DEBUG("User clicked", e);
         observer.startObserving(document);
     });
 
