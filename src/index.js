@@ -7,7 +7,7 @@ observer.firstLoadInitTime = Date.now();
 
 /// Init route change observer and starts VC measurement immediately.
 export function init() {
-    document.body.addEventListener("click", function (e) {
+    document.addEventListener("click", function (e) {
         Logger.DEBUG("User clicked", e);
         observer.startObserving(document);
     });
