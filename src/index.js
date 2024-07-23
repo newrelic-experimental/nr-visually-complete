@@ -4,7 +4,7 @@ import { Logger } from "./logger";
 // Observer singleton.
 export const observer = new Observer();
 
-/// Init route change observer and starts VC measurement immediately.
+/// Init user interaction listener and starts VC measurement immediately.
 export function init() {
     document.addEventListener("click", function (e) {
         Logger.DEBUG("User clicked", e);
