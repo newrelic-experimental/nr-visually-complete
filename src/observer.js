@@ -3,18 +3,11 @@ import { Visibility } from "./visibility";
 import { Watchdog } from "./watchdog";
 import { Elements } from "./elements";
 
-/*
-TODO: track XMLHttpRequest and fetch.
-
-Limitations:
-- Not possible to detect background image load set as a style (https://www.sitepoint.com/community/t/onload-for-background-image/6462).
-  Alternative, reload the image (https://jsfiddle.net/tovic/gmzSG/)
-*/
-
 const WATCHDOG = 'watchdog';
 const PAGELOAD = 'pageload';
 
 export class Observer {
+    metricHandler = null;
     firstLoadInitTime = null;
     isObserving = false;
     observer = null;
@@ -28,6 +21,8 @@ export class Observer {
 
     constructor () {
         Logger.DEBUG("Construct Observer")
+        // Only used once, during the initial page load.
+        this.firstLoadInitTime = Date.now();
         this.trackedElements = new Elements(this.elementLoadedHandler);
         this.watchdog = new Watchdog(10000, () => { this.whatchdogHandler() });
         this.finishChecker = new Watchdog(500, () => { this.finishCheckerHandler() });
@@ -64,16 +59,20 @@ export class Observer {
             this.observer.disconnect();
 
             // Generate VC metric
-            if (typeof newrelic !== "undefined") {
-                if (this.loadingTimeOfLastElement > 0) {
-                    newrelic.interaction()
-                        .setAttribute("vcValue", this.loadingTimeOfLastElement)
-                        .setAttribute("vcStopOrig", stopOrigin);
-                } else {
-                    Logger.WARNING("loadingTimeOfLastElement is zero, not generating VC metric.");
-                }
+            if (this.metricHandler) {
+                this.metricHandler(this.loadingTimeOfLastElement, stopOrigin);
             } else {
-                Logger.ERROR("New Relic browser agent not loaded, VC metric not generated");
+                if (typeof newrelic !== "undefined") {
+                    if (this.loadingTimeOfLastElement > 0) {
+                        newrelic.interaction()
+                            .setAttribute("vcValue", this.loadingTimeOfLastElement)
+                            .setAttribute("vcStopOrig", stopOrigin);
+                    } else {
+                        Logger.WARNING("loadingTimeOfLastElement is zero, not generating VC metric.");
+                    }
+                } else {
+                    Logger.ERROR("New Relic browser agent not loaded, VC metric not generated");
+                }
             }
 
             // Remove all "load" listeners from elements

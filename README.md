@@ -4,9 +4,13 @@
 
 This module captures the Visually Complete (VC) metric on browser SPAs. VC is the time requiered for all visible elements on the screen to load.
 
+Known limitations:
+
+- Is not possible to capture the load event of images set using CSS `background-image`.
+
 ## Value
 
-It makes use of the New Relic Browser Agent to attach an attributed, called `vcValue`, to [BrowserInteraction](https://docs.newrelic.com/attribute-dictionary/?event=BrowserInteraction) events of type `initialPageLoad`.
+It makes use of the New Relic Browser Agent to attach an attributed, called `vcValue`, to [BrowserInteraction](https://docs.newrelic.com/attribute-dictionary/?event=BrowserInteraction) events.
 
 This attribute is an integer that represents a time in milliseconds.
 
@@ -50,15 +54,30 @@ Load the script in your index HTML and call init method:
     </head>
 ```
 
-NR Visually Complete requieres the [New Relic Browser Agent](https://docs.newrelic.com/docs/browser/browser-monitoring/installation/install-browser-monitoring-agent/) to generate data. You should load it early in your page's head.
+NR Visually Complete requieres the [New Relic Browser Agent](https://docs.newrelic.com/docs/browser/browser-monitoring/installation/install-browser-monitoring-agent/) to generate data. **You should load it early in your page's head**.
 
-After calling `init()`, it will immediately start observing changes in the page to calculate the VC metric. It will also register listeners for navigation events and trigger the VC metric observer automatically when a route change happens. But in some situations this automatic behavior might not be required/desired, for these cases the VC observer can be called manually. For example after a custom action, like a user clicking a tab or an AJAX request that will update the DOM. The way to call it is:
+After calling `init()`, it will immediately start observing changes in the page to calculate the VC metric. It will also register listeners for user interactions and trigger the VC metric observer automatically. But in some situations this automatic behavior might not be required/desired, for these cases the VC observer can be called manually:
 
 ```javascript
 nrvcm.observer.startObserving(document);
 ```
 
 Instead of `document`, it's possible to use any DOM element, to further restrict the scope of monitoring.
+
+### Setting a custom handler
+
+When the VC metric is calculated, this module automatically sets a browser interaction, as stated in the [value](#value) section. In some situations it might be useful to generate other types of data, for example a [PageAction](https://docs.newrelic.com/attribute-dictionary/?event=PageAction). This behavior can be provided by setting a custom handler, that is triggered evey time a VC metric is generated:
+
+```javascript
+nrvcm.setMetricHandler((vcMetricVal, vcStopOrigin) => {
+    console.log("VC METRIC", vcMetricVal, vcStopOrigin);
+    /// do custom stuff here ...
+});
+```
+
+This handler should be defined before calling the `init()` function.
+
+> **IMPORTANT NOTE**: The custom handler overwrites the default behavior, so no browser interactions will be generated with the VC metric when it is defined.
 
 ## Example
 

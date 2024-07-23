@@ -1,9 +1,8 @@
 import { Observer } from "./observer";
 import { Logger } from "./logger";
 
+// Observer singleton.
 export const observer = new Observer();
-// Only used once, during the initial page load
-observer.firstLoadInitTime = Date.now();
 
 /// Init route change observer and starts VC measurement immediately.
 export function init() {
@@ -14,4 +13,13 @@ export function init() {
 
     Logger.DEBUG("Call init");
     observer.startObserving(document);
+}
+
+/// Set custom metric handler.
+export function setMetricHandler(mHandler) {
+    if (typeof(mHandler) === 'function') {
+        observer.metricHandler = mHandler;
+    } else {
+        Logger.WARNING("Custom handler must be a function");
+    }
 }
