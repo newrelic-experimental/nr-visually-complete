@@ -4,10 +4,6 @@
 
 This module captures the Visually Complete (VC) metric on browser SPAs. VC is the time requiered for all visible elements on the screen to load.
 
-Known limitations:
-
-- Is not possible to capture the load event of images set using CSS `background-image`.
-
 ## Value
 
 It makes use of the New Relic Browser Agent to attach an attributed, called `vcValue`, to [BrowserInteraction](https://docs.newrelic.com/attribute-dictionary/?event=BrowserInteraction) events.
@@ -88,6 +84,10 @@ python3 -m http.server 8008
 ```
 
 Then open the following [link](http://0.0.0.0:8008/).
+
+## Known limitations
+
+Is not possible to capture the load event of images set using CSS `background-image`.
 
 ## Support
 
