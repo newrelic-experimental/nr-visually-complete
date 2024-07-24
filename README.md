@@ -6,7 +6,7 @@ This module captures the Visually Complete (VC) metric on browser SPAs. VC is th
 
 ## Value
 
-It makes use of the New Relic Browser Agent to attach an attributed, called `vcValue`, to [BrowserInteraction](https://docs.newrelic.com/attribute-dictionary/?event=BrowserInteraction) events.
+It makes use of the New Relic Browser Agent to attach an attributed, called `vcValue`, to the current [BrowserInteraction](https://docs.newrelic.com/attribute-dictionary/?event=BrowserInteraction) event.
 
 This attribute is an integer that represents a time in milliseconds.
 
@@ -62,7 +62,7 @@ Instead of `document`, it's possible to use any DOM element, to further restrict
 
 ### Setting a custom handler
 
-When the VC metric is calculated, this module automatically sets a browser interaction, as stated in the [value](#value) section. In some situations it might be useful to generate other types of data, for example a [PageAction](https://docs.newrelic.com/attribute-dictionary/?event=PageAction). This behavior can be provided by setting a custom handler, that is triggered evey time a VC metric is generated:
+When the VC metric is calculated, this module automatically adds attributes to the current browser interaction, as stated in the [value](#value) section. In some situations it might be useful to generate other types of data, for example a [PageAction](https://docs.newrelic.com/attribute-dictionary/?event=PageAction). This behavior can be provided by setting a custom handler, that is triggered evey time a VC metric is generated:
 
 ```javascript
 nrvcm.setMetricHandler((vcMetricVal, vcStopOrigin) => {
