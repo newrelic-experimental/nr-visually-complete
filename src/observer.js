@@ -52,11 +52,10 @@ export class Observer {
             this.watchdog.stop();
             this.finishChecker.stop();
             this.firstLoadInitTime = null;
-
-            Logger.DEBUG("Stop Observing");
-
             // Disconnect observer
             this.observer.disconnect();
+            
+            Logger.DEBUG("Stop Observing");
 
             // Generate VC metric
             if (this.metricHandler) {
